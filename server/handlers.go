@@ -80,8 +80,46 @@ func spaceshipHandler(w http.ResponseWriter, r *http.Request) {
 				resp = QueryStatus{Success: false}
 				json.NewEncoder(w).Encode(resp)
 				return
-
 			}
+
+			craft, err := getSpaceCraftById(id)
+
+			if err != nil {
+				fmt.Println(err)
+				resp = QueryStatus{Success: false}
+				json.NewEncoder(w).Encode(resp)
+				return
+			}
+
+			if craft == nil {
+				resp = QueryStatus{Success: false}
+				json.NewEncoder(w).Encode(resp)
+				return
+			}
+
+			//Filter
+
+			if len(searchParams) > 0 {
+
+				filtered := make(map[string]string)
+				if name != "" {
+					filtered["name"] = craft.Name
+				}
+				if class != "" {
+					filtered["class"] = craft.Class
+				}
+				if status != "" {
+					filtered["status"] = craft.Status
+				}
+
+				resp = filtered
+
+				json.NewEncoder(w).Encode(resp)
+				return
+			}
+			resp = craft
+		}
+
 
 			// path := strings.TrimSpace(r.URL.Path)
 			// fmt.Println(path)
