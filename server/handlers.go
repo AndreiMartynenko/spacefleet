@@ -213,9 +213,20 @@ func spaceshipHandler(w http.ResponseWriter, r *http.Request) {
 			idStr := strings.TrimSpace(strings.TrimPrefix(path, "/spaceship/"))
 			idStr = strings.Split(idStr, "&")[0]
 
+			id, err := strconv.Atoi(idStr)
+
+			if err != nil {
+				resp = QueryStatus{Success: false}
+				json.NewEncoder(w).Encode(resp)
+				return
+			}
+
+		params := make(map[string]string)
+
 		err = updateSpaceship(id, params)
 
 		if err != nil {
+			fmt.Println(err)
 			resp = QueryStatus{Success: false}
 			json.NewEncoder(w).Encode(resp)
 			return
