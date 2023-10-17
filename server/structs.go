@@ -6,7 +6,7 @@ type SpaceCraft struct {
 	Class    string     `json:"class"`
 	Crew     int        `json:"crew"`
 	Image    string     `json:"image"`
-	Value    float64    `json:"value"`
+	Value    int        `json:"value"`
 	Status   string     `json:"status"`
 	Armament []Armament `json:"armament"`
 }

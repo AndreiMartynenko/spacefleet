@@ -1,7 +1,9 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"strconv"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -322,5 +324,60 @@ func deleteArmamentByCraftId(id int) error {
 		fmt.Print(err)
 		return err
 	}
+	return nil
+}
+
+func updateSpaceship(id int, params map[string]string) error {
+
+	query := `UPDATE spacecrafts SET `
+
+	for k, v := range params {
+		if k == "crew" {
+			crew, err := strconv.Atoi(v)
+			if err != nil {
+				return err
+			}
+			query += fmt.Sprintf("%v = %v, ", k, crew)
+		} else if k == "value" {
+			value, err := strconv.Atoi(v)
+			if err != nil {
+				return err
+			}
+
+			bytes := []byte(v)
+			var data []Armament
+			err = json.Unmarshal(bytes, &data)
+			if err != nil {
+				fmt.Println(err)
+				return err
+			}
+
+			for _, armament := range data {
+
+				err = saveArmament(id, armament.Title, armament.Qty)
+
+				if err != nil {
+					return err
+				}
+			}
+
+		} else {
+			query += fmt.Sprintf("%v = '%v', ", k, v)
+		}
+	}
+
+	statement, err := db.Prepare(query)
+
+	if err != nil {
+		return err
+	}
+	defer statement.Close()
+
+	_, err = statement.Exec(id)
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

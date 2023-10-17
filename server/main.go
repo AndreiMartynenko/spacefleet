@@ -27,5 +27,6 @@ func main() {
 
 	http.Handle("/", http.FileServer(http.Dir("../")))
 	http.HandleFunc("/spaceship/", spaceshipHandler)
+	fmt.Println("Server starting at port 8080...")
 	http.ListenAndServe(":8080", nil)
 }

@@ -6,3 +6,42 @@
 .add-spacecraft-form input{
     margin-bottom: 8px;
 }
+
+.armament-container{
+    width: 100%;
+    border-top: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    padding-top: 8px;
+}
+
+#new-spaceship-input-armament-title{
+    width: 35%;
+}
+#new-spaceship-input-armament-qty{
+    width: 35%;
+}
+
+.armament-container input {
+    margin-right: 4px;
+}
+
+.armament-selected{
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    margin-bottom: 8px;
+}
+
+.armament-item{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: blueviolet;
+    border-radius: 6px;
+    height: 24px;
+    padding: 4px;
+    margin-right: 8px;
+    
+}
