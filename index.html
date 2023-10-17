@@ -7,9 +7,22 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <select name="spacecrafts" id="spacecrafts">
+    </select>
 
-    <select name="spacecrafts" id="spacecrafts"></select>
+    <input type="checkbox" id="checkbox-name" value="Name">
+    <label for="checkbox-name">Name</label>
+    <input type="checkbox" id="checkbox-class" value="Class">
+    <label for="checkbox-class">Class</label>
+    <input type="checkbox" id="checkbox-status" value="Status">
+    <label for="checkbox-status">Status</label>
+    <input type="button" id="show-all-spacecraft" value="SHAW ALL">
+    <br>
+    <br>
+    <input type="button" id="delete-spacecraft" value="DELETE">
     <div id="spacecrafts-info"></div>
+    <input type="button" id="edit-spacecraft">
+
 
     <div class="add-spacecraft-form">
         <input type="text" placeholder="name" id="new-spaceship-input-name">
@@ -18,7 +31,6 @@
         <input type="text" placeholder="image url"  id="new-spaceship-input-image">
         <input type="number" placeholder="value" id="new-spaceship-input-value">
         <input type="text" placeholder="status"  id="new-spaceship-input-status">
-        <!-- <input type="text" placeholder="armament" id="new-spaceship-input-armament"> -->
         Armaments
         <div class="armament-selected" id="armament-selected"></div>
         <div class="armament-container"> 
@@ -26,6 +38,8 @@
             <input type="number" placeholder="quantity" id="new-spaceship-input-armament-qty">
             <input type="button" id="add-armament-button" value="+">
         </div>
+
+
         <input type="submit" id="add-spacecraft" value="Submit">
 
     <script type="module" src="app.js"></script>

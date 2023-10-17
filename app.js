@@ -163,3 +163,44 @@ addArmamentButton.addEventListener('click', e => {
 
 
 })
+
+
+
+
+
+
+
+
+	editSpacecraft.addEventListener('click', e => { 
+
+   armamentSelected.textContent = '';
+   armaments = [];
+
+   newSpaceshipInputName.value = selectedSpaceShip.name;
+   newSpaceshipInputClass.value = selectedSpaceShip.class;
+   newSpaceshipInputCrew.value = selectedSpaceShip.crew; 
+   newSpaceshipInputImage.value = selectedSpaceShip.image; 
+   newSpaceshipInputValue.value = selectedSpaceShip.value; 
+   newSpaceshipInputStatus.value = selectedSpaceShip.status;
+   
+
+
+   if(selectedSpaceShip.armament && selectedSpaceShip.armament.lenght > 0){
+    
+        selectedSpaceShip.armament.forEach(armament => {
+            console.log(armament)
+            const el = createArmamentElement(armament.title, armament.qty);
+           
+            armamentSelected.appendChild(armament)
+        });
+   }
+
+
+});
+
+const createArmamentElement = (title, qty) => {
+    const armament = document.createElement('div');
+    armament.textContent = `${title}: ${qty}`; 
+    armament.classList.add('armament-item');
+    return armament;
+}

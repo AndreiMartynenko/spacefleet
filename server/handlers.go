@@ -121,6 +121,7 @@ func spaceshipHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 	} else if r.Method == "POST" {
+
 		name := r.FormValue("name")
 		class := r.FormValue("class")
 		crewStr := r.FormValue("crew")
@@ -150,6 +151,51 @@ func spaceshipHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		data := []Armament{}
+		if armaments != "" {
+			bytes := []byte(armaments)
+			err = json.Unmarshal(bytes, &data)
+			if err != nil {
+				fmt.Println("Unmarshal armoments err ", err)
+				resp = QueryStatus{Success: false}
+				json.NewEncoder(w).Encode(resp)
+				return
+			}
+
+			craft := SpaceCraft{
+				Name:     name,
+				Class:    class,
+				Crew:     crew,
+				Image:    image,
+				Value:    value,
+				Status:   status,
+				Armament: data,
+			}
+
+			err = saveSpaceShip(craft)
+			if err != nil {
+				fmt.Println(err)
+				resp = QueryStatus{Success: false}
+				json.NewEncoder(w).Encode(resp)
+				return
+			}
+			resp = QueryStatus{Success: true}
+		}
+
+		err = updateSpaceship(id, params)
+
+		if err != nil {
+			fmt.Println(err)
+			resp = QueryStatus{Success: false}
+			json.NewEncoder(w).Encode(resp)
+			return
+		}
+		resp = QueryStatus{Success: true}
+
+	} else {
+		resp = "error: HTTP request method not allowed"
 	}
+
+	json.NewEncoder(w).Encode(resp)
 
 }
