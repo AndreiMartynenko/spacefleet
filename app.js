@@ -172,7 +172,6 @@ addSpacecraft.addEventListener('click', e => {
 
 }
 
-
 newSpaceshipInputName.value = '';
 newSpaceshipInputClass.value = '';
 newSpaceshipInputCrew.value = '';
@@ -196,6 +195,9 @@ addArmamentButton.addEventListener('click', e => {
     }
 
     const armament = document.createElement('div');
+    armament.textContent = `{title}: {qty}`;
+    armament.classList.add('armament')
+    armamentSelected.appendChild(armamentt)
 
 //DELETE
 deleteSpacecraft.addEventListener('click', e => {
