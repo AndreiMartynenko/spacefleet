@@ -4,7 +4,7 @@ In terminal
 Error 1049 (42000): Unknown database 'spacefleet'
 Error 1049 (42000): Unknown database 'spacefleet'
 
-When you start the server and see this error, make sure that the MySQL database is installed and also make sure that you have created a table with the exact name. In our case, 'spacefleet'.
+When you start the server and see this error, make sure that the MySQL database is installed and also make sure that you have created a db with the exact name. In our case, 'spacefleet'.
 
 mysql> create DATABASE spacefleet;
 mysql> show DATABASES;
