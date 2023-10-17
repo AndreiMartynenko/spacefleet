@@ -250,9 +250,9 @@ showAllSpacecraft.addEventListener('click', e => {
         .then(resp => resp.json())
         .then(data => {
             if (JSON.stringify(data).includes('error:')) {
-                throw new Error(resp);
+                throw new Error(data);
             }
-            spacecraftsInfo.textContent = JSON.stringify(resp)
+            spacecraftsInfo.textContent = JSON.stringify(data)
         })
         .catch(err => console.log(err));
 
