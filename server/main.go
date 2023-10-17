@@ -23,6 +23,11 @@ func main() {
 		fmt.Println(err)
 	}
 
+	err = createSpacecraftsTable()
+	if err != nil {
+		fmt.Println(err)
+	}
+
 	defer db.Close()
 
 	http.Handle("/", http.FileServer(http.Dir("../")))

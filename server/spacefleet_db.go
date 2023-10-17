@@ -56,7 +56,7 @@ func createArmamentTable() error {
 }
 
 func saveArmament(craftId int, Title string, Qty string) error {
-	query := `INSERT INTO armament_log (CraftId, Title, Qty) VALUES(?,?,?)`
+	query := `INSERT INTO armament (CraftId, Title, Qty) VALUES(?,?,?)`
 
 	statement, err := db.Prepare(query)
 
@@ -77,7 +77,7 @@ func getArmaments(craftId int) ([]Armament, error) {
 	SELECT
 	Title, Qty
 	FROM
-	armament_log
+	armament
 	WHERE
 	CraftId = ?
 	`
@@ -311,7 +311,7 @@ func deleteSpaceCraftById(id int) error {
 }
 
 func deleteArmamentByCraftId(id int) error {
-	query := `DELETE FROM armament_log WHERE CraftId = ?`
+	query := `DELETE FROM armament WHERE CraftId = ?`
 
 	statement, err := db.Prepare(query)
 	if err != nil {
