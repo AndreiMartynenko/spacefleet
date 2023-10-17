@@ -294,16 +294,16 @@ const createArmamentElement = (title, qty) => {
     armament.classList.add('armament-item');
     armament.addEventListener('click', e => {
         const content = e.target.textContent;
-        const arr = content.split("");
-        const title = arr[1].trim();
-        const qty = arr[0].trim();
+        const arr = content.split(":");
+        const title = arr[0].trim();
+        const qty = arr[1].trim();
         newSpaceshipInputArmamentTitle.value = title;
         newSpaceshipInputArmamentQty.value = qty;
-        // console.log(armaments)
+        console.log(armaments)
         armaments = armaments.filter(item => {
-            return title !== title || qty !== qty
+            return title !== item.title || qty !== item.qty
         })
-        const els = from(armamentSelected.childNodes).filter(node => node.innerText !== content)
+        const els = Array.from(armamentSelected.childNodes).filter(node => node.innerText !== content)
         armamentSelected.innerHTML = ''
         els.forEach(el => armamentSelected.appendChild(el))
     });
