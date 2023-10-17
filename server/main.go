@@ -1,7 +1,26 @@
 package main
 
-import "fmt"
+import (
+	"database/sql"
+	"fmt"
+	"net/http"
+)
+
+var db *sql.DB
 
 func main() {
-	fmt.Println("Server is working fine")
+	dbLocal, err := sql.Open("mysql", "root:password@tcp(127.0.0.1:3306)/spacefleet")
+
+	db = dbLocal
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	defer db.Close()
+
+	//http.Handle("/", http.FileServer(http.Dir("../")))
+
+	fmt.Println("Server starting at port 8080...")
+	http.ListenAndServe(":8080", nil)
 }
