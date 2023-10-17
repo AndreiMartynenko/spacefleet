@@ -11,7 +11,7 @@ mysql> show DATABASES;
 
 For testing purposes 
 
-username root
+username - root
 password - password
 
 Database  
