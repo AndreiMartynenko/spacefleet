@@ -4,12 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spacefleet</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
     <select name="spacecrafts" id="spacecrafts"></select>
     <div id="spacecrafts-info"></div>
+
+    <div class="add-spacecraft-form">
+        <input type="text" placeholder="name" id="new-spaceship-input-name">
+        <input type="text" placeholder="class"  id="new-spaceship-input-class">
+        <input type="number" placeholder="crew"  id="new-spaceship-input-crew">
+        <input type="text" placeholder="image url"  id="new-spaceship-input-image">
+        <input type="number" placeholder="value" id="new-spaceship-input-value">
+        <input type="text" placeholder="status"  id="new-spaceship-input-status">
+        <input type="text" placeholder="armament" id="new-spaceship-input-armament">
+        <input type="submit" id="add-spacecraft" value="Submit">
+    </div>
 
     <script type="module" src="app.js"></script>
     

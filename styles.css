@@ -1,0 +1,8 @@
+.add-spacecraft-form{
+    display: flex;
+    width: 300px;
+    flex-direction: column;
+}
+.add-spacecraft-form input{
+    margin-bottom: 8px;
+}

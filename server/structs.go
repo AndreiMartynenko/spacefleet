@@ -12,17 +12,21 @@ type SpaceCraft struct {
 }
 
 type Armament struct {
-	Id    int    `json:"id"`
+	// Id    int    `json:"id"`
 	Title string `json:"title"`
 	Qty   string `json:"qty"`
 }
 
-type Response struct {
-	Payload interface{} `json:"payload"`
-	Error   *Error      `json:"error"`
-}
+// type Response struct {
+// 	Payload interface{} `json:"payload"`
+// 	Error   *Error      `json:"error"`
+// }
 
-type Error struct {
-	Type    string `json:"type"`
-	Message string `json:"message"`
+// type Error struct {
+// 	Type    string `json:"type"`
+// 	Message string `json:"message"`
+// }
+
+type QueryStatus struct {
+	Success bool `json:"success"`
 }
