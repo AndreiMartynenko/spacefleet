@@ -30,4 +30,5 @@ func createSpacecraftsTable() error {
 	defer statement.Close()
 	statement.Exec()
 	return nil
+
 }
