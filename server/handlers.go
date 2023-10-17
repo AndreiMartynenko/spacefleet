@@ -81,41 +81,41 @@ func spaceshipHandler(w http.ResponseWriter, r *http.Request) {
 				json.NewEncoder(w).Encode(resp)
 				return
 
-		}
-
-		// path := strings.TrimSpace(r.URL.Path)
-		// fmt.Println(path)
-
-		if path == "/spaceship/" {
-			crafts, err := getSpaceCrafts()
-
-			if err != nil {
-				//resp.Error = &Error{Type: ERROR_ACCESSING_DATABASE, Message: fmt.Sprintf("Error: %v", err)}
-				resp = Error{Error: fmt.Sprintf("error: %v", err)}
-				json.NewEncoder(w).Encode(resp)
-				return
 			}
 
-			// resp.Payload = crafts
-			resp = crafts
+			// path := strings.TrimSpace(r.URL.Path)
+			// fmt.Println(path)
 
-		} else {
-			idStr := strings.TrimSpace(strings.TrimPrefix(path, "/spaceship/"))
-			id, err := strconv.Atoi(idStr)
-			if err != nil {
-				resp = Error{Error: fmt.Sprintf("error: %v", err)}
-				json.NewEncoder(w).Encode(resp)
-				return
+			if path == "/spaceship/" {
+				crafts, err := getSpaceCrafts()
+
+				if err != nil {
+					//resp.Error = &Error{Type: ERROR_ACCESSING_DATABASE, Message: fmt.Sprintf("Error: %v", err)}
+					resp = Error{Error: fmt.Sprintf("error: %v", err)}
+					json.NewEncoder(w).Encode(resp)
+					return
+				}
+
+				// resp.Payload = crafts
+				resp = crafts
+
+			} else {
+				idStr := strings.TrimSpace(strings.TrimPrefix(path, "/spaceship/"))
+				id, err := strconv.Atoi(idStr)
+				if err != nil {
+					resp = Error{Error: fmt.Sprintf("error: %v", err)}
+					json.NewEncoder(w).Encode(resp)
+					return
+				}
+				craft, err := getSpaceCraftById(id)
 			}
-			craft, err := getSpaceCraftById(id)
+
+			// } else {
+			// 	resp.Error = &Error{Type: WRONG_HTTP_METHOD, Message: "Error: HTTP request method not allowed"}
+			// }
+
+			// json.NewEncoder(w).Encode(resp)
+
 		}
-
-		// } else {
-		// 	resp.Error = &Error{Type: WRONG_HTTP_METHOD, Message: "Error: HTTP request method not allowed"}
-		// }
-
-		// json.NewEncoder(w).Encode(resp)
-
 	}
-
 }
