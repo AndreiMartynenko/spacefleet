@@ -99,6 +99,8 @@ const loadSpaceShip = (id) => {
             if (JSON.stringify(data).includes('error:')) {
                 throw new Error(data);
             }
+
+            selectedSpaceShip = data
             spacecraftsInfo.textContent = JSON.stringify(data)
         })
         .catch(err => console.log(err));
@@ -122,19 +124,9 @@ addSpacecraft.addEventListener('click', e => {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
-            // 'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: FormData,
     })
-        // body: new URLSearchParams({
-        //     'name': newSpaceshipInputName.value,
-        //     'class': newSpaceshipInputClass.value,
-        //     'crew': newSpaceshipInputCrew.value,
-        //     'image': newSpaceshipInputImage.value,
-        //     'value': newSpaceshipInputValue.value,
-        //     'status': newSpaceshipInputStatus.value,
-        //     'armament': newSpaceshipInputArmament.value
-
     .then(resp => resp.json())
     .then(data => console.log(data))
     .catch(err => console.log(err))
@@ -143,64 +135,30 @@ addSpacecraft.addEventListener('click', e => {
     addSpacecraft.value = 'Submit';
 }
 
-addArmamentButton.addEventListener('click', e => {
-    const title = newSpaceshipInputArmamentTitle.value;
-    const qty = newSpaceshipInputArmamentQty.value;
+let url = `/spaceship/${selectedSpaceShip.id}`
+const urlParams = new URLSearchParams({})
 
-    if (title == '' || Number.isNaN(qty) || qty < 1) {
-        alert('error');
-        return;
-    }
+if (selectedSpaceShip.name !== newSpaceshipInputName.value) {
+    urlParams.append('name', newSpaceshipInputName.value);
+}
+if (selectedSpaceShip.class !== newSpaceshipInputClass.value) {
+    urlParams.append('class', newSpaceshipInputClass.value);
+}
+if (selectedSpaceShip.crew.toString() !== newSpaceshipInputCrew.value) {
+    urlParams.append('crew', newSpaceshipInputCrew.value);
+}
+if (selectedSpaceShip.image !== newSpaceshipInputImage.value) {
+    urlParams.append('image', newSpaceshipInputImage.value);
+}
+if (selectedSpaceShip.value.toString() !== newSpaceshipInputValue.value) {
+    urlParams.append('value', newSpaceshipInputValue.value);
+}
+if (selectedSpaceShip.status !== newSpaceshipInputStatus.value) {
+    urlParams.append('status', newSpaceshipInputStatus.value);
+}
 
-    const armament = document.createElement('div');
-    armament.textContent = `${title}: ${qty}`;
-    armament.classList.add('armament-item')
-    armamentSelected.appendChild(armament)
+urlParams.append('armaments', JSON.stringify(armaments));
 
-    armaments.push({ title, qty })
-
-
-
-
-})
-
-
-
-
-
-
-
-
-	editSpacecraft.addEventListener('click', e => { 
-
-   armamentSelected.textContent = '';
-   armaments = [];
-
-   newSpaceshipInputName.value = selectedSpaceShip.name;
-   newSpaceshipInputClass.value = selectedSpaceShip.class;
-   newSpaceshipInputCrew.value = selectedSpaceShip.crew; 
-   newSpaceshipInputImage.value = selectedSpaceShip.image; 
-   newSpaceshipInputValue.value = selectedSpaceShip.value; 
-   newSpaceshipInputStatus.value = selectedSpaceShip.status;
-   
-
-
-   if(selectedSpaceShip.armament && selectedSpaceShip.armament.lenght > 0){
-    
-        selectedSpaceShip.armament.forEach(armament => {
-            console.log(armament)
-            const el = createArmamentElement(armament.title, armament.qty);
-           
-            armamentSelected.appendChild(armament)
-        });
-   }
-
+url = url + '?' + urlParams;
 
 });
-
-const createArmamentElement = (title, qty) => {
-    const armament = document.createElement('div');
-    armament.textContent = `${title}: ${qty}`; 
-    armament.classList.add('armament-item');
-    return armament;
-}

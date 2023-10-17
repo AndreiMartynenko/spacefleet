@@ -45,3 +45,15 @@
     margin-right: 8px;
     
 }
+
+#delete-spacecraft{
+    color: red;
+    margin-left: 350px;
+}
+
+#edit-spacecraft{
+    display: none;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    padding: 4px;
+}

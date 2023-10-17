@@ -331,13 +331,15 @@ func updateSpaceship(id int, params map[string]string) error {
 
 	query := `UPDATE spacecrafts SET `
 
+	set := ""
+
 	for k, v := range params {
 		if k == "crew" {
 			crew, err := strconv.Atoi(v)
 			if err != nil {
 				return err
 			}
-			query += fmt.Sprintf("%v = %v, ", k, crew)
+			set += fmt.Sprintf("%v = %v, ", k, crew)
 		} else if k == "value" {
 			value, err := strconv.Atoi(v)
 			if err != nil {
@@ -352,11 +354,27 @@ func updateSpaceship(id int, params map[string]string) error {
 				return err
 			}
 
+			set += fmt.Sprintf("%v = %v, ", k, value)
+		} else if k == "armaments" {
+
+			err := deleteArmamentByCraftId(id)
+			if err != nil {
+				return err
+			}
+
 			for _, armament := range data {
 
 				err = saveArmament(id, armament.Title, armament.Qty)
 
 				if err != nil {
+					return err
+				}
+
+				bytes := []byte(v)
+				var data []Armament
+				err = json.Unmarshal(bytes, &data)
+				if err != nil {
+					fmt.Println(err)
 					return err
 				}
 			}

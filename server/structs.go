@@ -6,26 +6,15 @@ type SpaceCraft struct {
 	Class    string     `json:"class"`
 	Crew     int        `json:"crew"`
 	Image    string     `json:"image"`
-	Value    int        `json:"value"`
+	Value    float64    `json:"value"`
 	Status   string     `json:"status"`
 	Armament []Armament `json:"armament"`
 }
 
 type Armament struct {
-	// Id    int    `json:"id"`
 	Title string `json:"title"`
 	Qty   string `json:"qty"`
 }
-
-// type Response struct {
-// 	Payload interface{} `json:"payload"`
-// 	Error   *Error      `json:"error"`
-// }
-
-// type Error struct {
-// 	Type    string `json:"type"`
-// 	Message string `json:"message"`
-// }
 
 type QueryStatus struct {
 	Success bool `json:"success"`
