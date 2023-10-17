@@ -195,9 +195,11 @@ addArmamentButton.addEventListener('click', e => {
     }
 
     const armament = document.createElement('div');
-    armament.textContent = `{title}: {qty}`;
-    armament.classList.add('armament')
-    armamentSelected.appendChild(armamentt)
+    armament.textContent = `${title}: ${qty}`;
+    armament.classList.add('armament-item')
+    armamentSelected.appendChild(armament)
+
+    armaments.push({ title, qty })
 
 //DELETE
 deleteSpacecraft.addEventListener('click', e => {
@@ -219,6 +221,20 @@ showAllSpacecraft.addEventListener('click', e => {
     const _class = checkboxClass.checked;
     const _status = checkboxStatus.checked;
 
+    let url = `/spaceship`
+    if (_name || _class || _status) {
+        const urlParams = new URLSearchParams({})
+        if (_name) {
+            urlParams.append("name", _name)
+        }
+        if (_class) {
+            urlParams.append("class", _class)
+        }
+        if (_status) {
+            urlParams.append("status", _status)
+        }
+        url = url + '?' + urlParams;
+
     }
 
     fetch(url,
@@ -231,10 +247,37 @@ showAllSpacecraft.addEventListener('click', e => {
         .then(resp => resp.json())
         .then(data => {
             if (JSON.stringify(data).includes('error:')) {
-                throw new Error(data);
+                throw new Error(resp);
             }
-            spacecraftsInfo.textContent = JSON.stringify(data)
+            spacecraftsInfo.textContent = JSON.stringify(resp)
         })
         .catch(err => console.log(err));
 
 
+//Editing
+
+editSpacecraft.addEventListener('click', e => {
+
+    armamentSelected.textContent = '';
+    armaments = [];
+
+    newSpaceshipInputName.value = selectedSpaceShip.name;
+    newSpaceshipInputClass.value = selectedSpaceShip.class;
+    newSpaceshipInputCrew.value = selectedSpaceShip.crew;
+    newSpaceshipInputImage.value = selectedSpaceShip.image;
+    newSpaceshipInputValue.value = selectedSpaceShip.value;
+    newSpaceshipInputStatus.value = selectedSpaceShip.status;
+
+    if (selectedSpaceShip.armament && selectedSpaceShip.armament.length > 0) {
+
+        selectedSpaceShip.armament.forEach(armament => {
+            const el = createArmamentElement(armament.title, armament.qty);
+            armamentSelected.appendChild(el);
+            armaments.push(armament)
+          
+        });
+    }
+
+    addSpacecraft.value = "Update";
+
+});

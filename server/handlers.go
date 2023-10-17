@@ -164,64 +164,97 @@ func spaceshipHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			craft := SpaceCraft{
-				Name:     name,
-				Class:    class,
-				Crew:     crew,
-				Image:    image,
-				Value:    value,
-				Status:   status,
-				Armament: data,
-			}
+		}
 
-			err = saveSpaceShip(craft)
-			if err != nil {
-				fmt.Println(err)
-				resp = QueryStatus{Success: false}
-				json.NewEncoder(w).Encode(resp)
-				return
-			}
-			resp = QueryStatus{Success: true}
+		craft := SpaceCraft{
+			Name:     name,
+			Class:    class,
+			Crew:     crew,
+			Image:    image,
+			Value:    value,
+			Status:   status,
+			Armament: data,
+		}
 
-			//DELETE
+		err = saveSpaceShip(craft)
+		if err != nil {
+			fmt.Println(err)
+			resp = QueryStatus{Success: false}
+			json.NewEncoder(w).Encode(resp)
+			return
+		}
+		resp = QueryStatus{Success: true}
 
-		} else if r.Method == "DELETE" {
+		//DELETE
 
-			path := strings.TrimSpace(r.URL.Path)
-			idStr := strings.TrimSpace(strings.TrimPrefix(path, "/spaceship/"))
-			id, err := strconv.Atoi(idStr)
-			if err != nil {
-				fmt.Println(err)
-				resp = QueryStatus{Success: false}
-				json.NewEncoder(w).Encode(resp)
-				return
-			}
-			err = deleteSpaceCraftById(id)
+	} else if r.Method == "DELETE" {
 
-			if err != nil {
-				fmt.Println(err)
-				resp = QueryStatus{Success: false}
-				json.NewEncoder(w).Encode(resp)
-				return
-			}
+		path := strings.TrimSpace(r.URL.Path)
+		idStr := strings.TrimSpace(strings.TrimPrefix(path, "/spaceship/"))
+		id, err := strconv.Atoi(idStr)
+		if err != nil {
+			fmt.Println(err)
+			resp = QueryStatus{Success: false}
+			json.NewEncoder(w).Encode(resp)
+			return
+		}
+		err = deleteSpaceCraftById(id)
 
-			resp = QueryStatus{Success: true}
+		if err != nil {
+			fmt.Println(err)
+			resp = QueryStatus{Success: false}
+			json.NewEncoder(w).Encode(resp)
+			return
+		}
 
-			//PUT
+		resp = QueryStatus{Success: true}
 
-		} else if r.Method == "PUT" {
-			idStr := strings.TrimSpace(strings.TrimPrefix(path, "/spaceship/"))
-			idStr = strings.Split(idStr, "&")[0]
+		//PUT
 
-			id, err := strconv.Atoi(idStr)
+	} else if r.Method == "PUT" {
 
-			if err != nil {
-				resp = QueryStatus{Success: false}
-				json.NewEncoder(w).Encode(resp)
-				return
-			}
+		idStr := strings.TrimSpace(strings.TrimPrefix(path, "/spaceship/"))
+		idStr = strings.Split(idStr, "&")[0]
+
+		id, err := strconv.Atoi(idStr)
+
+		if err != nil {
+			resp = QueryStatus{Success: false}
+			json.NewEncoder(w).Encode(resp)
+			return
+		}
 
 		params := make(map[string]string)
+
+		name := strings.TrimSpace(r.URL.Query().Get("name"))
+		if name != "" {
+			params["name"] = name
+		}
+		class := strings.TrimSpace(r.URL.Query().Get("class"))
+		if class != "" {
+			params["class"] = class
+		}
+		crew := strings.TrimSpace(r.URL.Query().Get("crew"))
+		if crew != "" {
+			params["crew"] = crew
+		}
+		image := strings.TrimSpace(r.URL.Query().Get("image"))
+		if image != "" {
+			params["image"] = image
+		}
+		value := strings.TrimSpace(r.URL.Query().Get("value"))
+		if value != "" {
+			params["value"] = value
+		}
+		status := strings.TrimSpace(r.URL.Query().Get("status"))
+		if status != "" {
+			params["status"] = status
+		}
+
+		armaments := strings.TrimSpace(r.URL.Query().Get("armaments"))
+		if armaments != "" {
+			params["armaments"] = armaments
+		}
 
 		err = updateSpaceship(id, params)
 
