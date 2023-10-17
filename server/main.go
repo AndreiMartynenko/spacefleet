@@ -17,10 +17,15 @@ func main() {
 		fmt.Println(err)
 	}
 
+	// err = createTable()
+	err = createArmamentTable()
+	if err != nil {
+		fmt.Println(err)
+	}
+
 	defer db.Close()
 
-	//http.Handle("/", http.FileServer(http.Dir("../")))
-
-	fmt.Println("Server starting at port 8080...")
+	http.Handle("/", http.FileServer(http.Dir("../")))
+	http.HandleFunc("/spaceship/", spaceshipHandler)
 	http.ListenAndServe(":8080", nil)
 }

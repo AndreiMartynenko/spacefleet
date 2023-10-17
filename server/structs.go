@@ -12,6 +12,7 @@ type SpaceCraft struct {
 }
 
 type Armament struct {
+	Id    int    `json:"id"`
 	Title string `json:"title"`
 	Qty   string `json:"qty"`
 }
