@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
+	"strings"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -346,19 +347,19 @@ func updateSpaceship(id int, params map[string]string) error {
 				return err
 			}
 
-			bytes := []byte(v)
-			var data []Armament
-			err = json.Unmarshal(bytes, &data)
-			if err != nil {
-				fmt.Println(err)
-				return err
-			}
-
 			set += fmt.Sprintf("%v = %v, ", k, value)
 		} else if k == "armaments" {
 
 			err := deleteArmamentByCraftId(id)
 			if err != nil {
+				return err
+			}
+
+			bytes := []byte(v)
+			var data []Armament
+			err = json.Unmarshal(bytes, &data)
+			if err != nil {
+				fmt.Println(err)
 				return err
 			}
 
@@ -369,20 +370,20 @@ func updateSpaceship(id int, params map[string]string) error {
 				if err != nil {
 					return err
 				}
-
-				bytes := []byte(v)
-				var data []Armament
-				err = json.Unmarshal(bytes, &data)
-				if err != nil {
-					fmt.Println(err)
-					return err
-				}
 			}
 
 		} else {
-			query += fmt.Sprintf("%v = '%v', ", k, v)
+			set += fmt.Sprintf("%v = '%v', ", k, v)
 		}
 	}
+
+	set = strings.TrimSuffix(set, ", ")
+
+	if strings.TrimSpace(set) == "" {
+		return nil
+	}
+
+	query += set + " WHERE Id = ?"
 
 	statement, err := db.Prepare(query)
 

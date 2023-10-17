@@ -161,4 +161,16 @@ urlParams.append('armaments', JSON.stringify(armaments));
 
 url = url + '?' + urlParams;
 
+fetch(url, 
+    {
+        method: 'PUT',
+        headers:
+        {
+            'Accept': 'application/json'
+        }
+    })
+    .then(resp => resp.json())
+    .then(data => console.log(data))
+    .catch(err => console.log(err))
+
 });
