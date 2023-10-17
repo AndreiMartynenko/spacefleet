@@ -83,12 +83,6 @@ func spaceshipHandler(w http.ResponseWriter, r *http.Request) {
 
 		}
 
-		if err != nil {
-			resp.Error = &Error{Type: ERROR_ACCESSING_DATABASE, Message: fmt.Sprintf("Error: %v", err)}
-			json.NewEncoder(w).Encode(resp)
-			return
-		}
-
 		// path := strings.TrimSpace(r.URL.Path)
 		// fmt.Println(path)
 
