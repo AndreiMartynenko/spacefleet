@@ -296,6 +296,16 @@ editSpacecraft.addEventListener('click', e => {
 });
 
 const createArmamentElement = (title, qty) => {
+    const armament = document.createElement('div');
+    armament.textContent = `${title}: ${qty}`;
+    armament.classList.add('armament-item');
+    armament.addEventListener('click', e => {
+        const content = e.target.textContent;
+        const arr = content.split(":");
+        const title = arr[0].trim();
+        const qty = arr[1].trim();
+    });
+    return armament;
 
 
 }
