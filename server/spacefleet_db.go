@@ -11,7 +11,7 @@ import (
 //     | INTEGER | TEXT     | TEXT 	  | INTEGER  | TEXT   | INTEGER | TEXT    |
 
 //     _______________Armament________________
-//    | id 	    | CraftId    | Title | Qty  |
+//    | id 	    | CraftId     | Title | Qty  |
 //    | INTEGER |  INTEGER    | TEXT  | TEXT |
 
 func createSpacecraftsTable() error {
@@ -278,5 +278,49 @@ func saveSpaceShip(craft SpaceCraft) error {
 		return err
 	}
 
+	return nil
+}
+
+func deleteSpaceCraftById(id int) error {
+	query := `DELETE FROM spacecrafts WHERE Id = ?`
+
+	statement, err := db.Prepare(query)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+	defer statement.Close()
+	_, err = statement.Exec(id)
+
+	if err != nil {
+		fmt.Print(err)
+		return err
+	}
+
+	err = deleteArmamentByCraftId(id)
+
+	if err != nil {
+		fmt.Print(err)
+		return err
+	}
+
+	return nil
+}
+
+func deleteArmamentByCraftId(id int) error {
+	query := `DELETE FROM armament_log WHERE CraftId = ?`
+
+	statement, err := db.Prepare(query)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+	defer statement.Close()
+	_, err = statement.Exec(id)
+
+	if err != nil {
+		fmt.Print(err)
+		return err
+	}
 	return nil
 }
