@@ -9,11 +9,10 @@ import (
 )
 
 func spaceshipHandler(w http.ResponseWriter, r *http.Request) {
-	// resp := Response{Payload: nil, Error: nil}
-
-	var resp interface{}
 
 	fmt.Println(r.Method)
+
+	var resp interface{}
 
 	fmt.Println("URL ", r.URL)
 
@@ -72,6 +71,7 @@ func spaceshipHandler(w http.ResponseWriter, r *http.Request) {
 			resp = crafts
 
 		} else {
+
 			idStr := strings.TrimSpace(strings.TrimPrefix(path, "/spaceship/"))
 			idStr = strings.Split(idStr, "&")[0]
 
@@ -143,7 +143,7 @@ func spaceshipHandler(w http.ResponseWriter, r *http.Request) {
 
 		}
 
-		value, err := strconv.Itoa(valueStr)
+		value, err := strconv.ParseFloat(valueStr, 32)
 		if err != nil {
 			fmt.Println("Parse value err ", err)
 			resp = QueryStatus{Success: false}
@@ -180,7 +180,19 @@ func spaceshipHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			resp = QueryStatus{Success: true}
+		
+		} else if r.Method == "DELETE" {
+
+			path := strings.TrimSpace(r.URL.Path)
+			idStr := strings.TrimSpace(strings.TrimPrefix(path, "/spaceship/"))
+			if err != nil {
+				fmt.Println(err)
+				resp = QueryStatus{Success: false}
+				return
 		}
+
+		resp = QueryStatus{Success: true}
+
 
 		err = updateSpaceship(id, params)
 
