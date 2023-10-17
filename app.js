@@ -15,6 +15,18 @@ const newSpaceshipInputArmamentTitle = document.querySelector('#new-spaceship-in
 const newSpaceshipInputArmamentQty = document.querySelector('#new-spaceship-input-armament-qty');
 const armamentSelected = document.querySelector('#armament-selected');
 
+const deleteSpacecraft = document.querySelector('#delete-spacecraft');
+
+const checkboxName = document.querySelector('#checkbox-name');
+const checkboxClass = document.querySelector('#checkbox-class');
+const checkboxStatus = document.querySelector('#checkbox-status');
+const showAllSpacecraft = document.querySelector('#show-all-spacecraft');
+
+const editSpacecraft = document.querySelector('#edit-spacecraft');
+
+let currentSpaceShipId = 0;
+let selectedSpaceShip;
+
 const armaments = [];
 
 fetch('/spaceship', {
@@ -26,75 +38,110 @@ fetch('/spaceship', {
     .then(resp => resp.json())
     .then(data => {
 
-        console.log(data.payload)
-        data.payload.forEach(element => {
-            const option = document.createElement('option');
-            option.setAttribute('value', element.name);
-            option.textContent = element.name;
-            spacecraftsSelect.appendChild(option);
-            option.addEventListener('click', e => {
-                alert(element.id)
+        console.log(data)
 
+        if (data) {
+
+            data.forEach(element => {
+                const option = document.createElement('option');
+                option.setAttribute('value', element.id);
+                option.textContent = element.name;
+                spacecraftsSelect.appendChild(option);
                 option.addEventListener('click', e => {
+                    // alert(element.id)
+
+                    currentSpaceShipId = element.id;
+                    editSpacecraft.style.display = 'block';
+                    editSpacecraft.value = `Edit ${element.name}`;
+
+                    // option.addEventListener('click', e => {
                     loadSpaceShip(element.id);
                 })
 
             });
-        })
-            .catch(err => console.log(err));
 
-        const loadSpaceShip = (id) => {
-            fetch(`/spaceship/${id}`,
-                {
-                    method: 'GET',
-                    headers: {
-                        "Accept": "application/json"
-                    }
-                })
-                .then(resp => resp.json())
-                .then(data => {
-                    if (JSON.stringify(data).includes('error:')) {
-                        throw new Error(data);
-                    }
-                    spacecraftsInfo.textContent = JSON.stringify(data)
-                })
-                .catch(err => console.log(err));
         }
+    })
+    .catch(err => console.log(err));
 
-        addSpacecraft.addEventListener('click', e => {
+const loadSpaceShip = (id) => {
 
-            const formData = new FormData();
-            formData.append('name', newSpaceshipInputName.value);
-            formData.append('class', newSpaceshipInputClass.value)
-            formData.append('crew', newSpaceshipInputCrew.value)
-            formData.append('image', newSpaceshipInputImage.value)
-            formData.append('value', newSpaceshipInputValue.value)
-            formData.append('status', newSpaceshipInputStatus.value)
-            formData.append('armaments', JSON.stringify(armaments))
+    const _name = checkboxName.checked
+    const _class = checkboxClass.checked;
+    const _status = checkboxStatus.checked;
 
 
-            fetch('/spaceship/', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                // body: new URLSearchParams({
-                //     'name': newSpaceshipInputName.value,
-                //     'class': newSpaceshipInputClass.value,
-                //     'crew': newSpaceshipInputCrew.value,
-                //     'image': newSpaceshipInputImage.value,
-                //     'value': newSpaceshipInputValue.value,
-                //     'status': newSpaceshipInputStatus.value,
-                //     'armament': newSpaceshipInputArmament.value
-            })
+    let url = `/spaceship/${id}`
 
-            body: formData
+    if (_name || _class || _status) {
+        const urlParams = new URLSearchParams({})
+        if (_name) {
+            urlParams.append("name", _name)
+        }
+        if (_class) {
+            urlParams.append("class", _class)
+        }
+        if (_status) {
+            urlParams.append("status", _status)
+        }
+        url = url + '?' + urlParams;
+    }
+    fetch(url, 
+        {
+            method: 'GET',
+            headers: {
+                "Accept": "application/json"
+            }
         })
-            .then(resp => resp.json())
-            .then(data => console.log(data))
-            .catch(err => console.log(err))
-    });
+        .then(resp => resp.json())
+        .then(data => {
+
+            if (JSON.stringify(data).includes('error:')) {
+                throw new Error(data);
+            }
+            spacecraftsInfo.textContent = JSON.stringify(data)
+        })
+        .catch(err => console.log(err));
+}
+
+addSpacecraft.addEventListener('click', e => {
+
+    if (addSpacecraft.value === 'Submit') {
+
+    const formData = new FormData();
+    formData.append('name', newSpaceshipInputName.value);
+    formData.append('class', newSpaceshipInputClass.value)
+    formData.append('crew', newSpaceshipInputCrew.value)
+    formData.append('image', newSpaceshipInputImage.value)
+    formData.append('value', newSpaceshipInputValue.value)
+    formData.append('status', newSpaceshipInputStatus.value)
+    formData.append('armaments', JSON.stringify(armaments))
+
+
+    fetch('/spaceship/', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            // 'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: FormData,
+    })
+        // body: new URLSearchParams({
+        //     'name': newSpaceshipInputName.value,
+        //     'class': newSpaceshipInputClass.value,
+        //     'crew': newSpaceshipInputCrew.value,
+        //     'image': newSpaceshipInputImage.value,
+        //     'value': newSpaceshipInputValue.value,
+        //     'status': newSpaceshipInputStatus.value,
+        //     'armament': newSpaceshipInputArmament.value
+
+    .then(resp => resp.json())
+    .then(data => console.log(data))
+    .catch(err => console.log(err))
+
+} else if (addSpacecraft.value === 'Update') {
+    addSpacecraft.value = 'Submit';
+}
 
 addArmamentButton.addEventListener('click', e => {
     const title = newSpaceshipInputArmamentTitle.value;
