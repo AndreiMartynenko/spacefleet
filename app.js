@@ -43,8 +43,18 @@ fetch('/spaceship', {
         if (data) {
 
             data.forEach(element => {
+
+                if (data && Array.isArray(data.addSpacecraft)) {
+
+                spacecraftsSelect.innerHTML = '';
+
+                data.addSpacecraft.forEach(element => {
+
+
+
                 const option = document.createElement('option');
                 option.setAttribute('value', element.id);
+                option.value = element.id;
                 option.textContent = element.name;
                 spacecraftsSelect.appendChild(option);
                 option.addEventListener('click', e => {
@@ -277,7 +287,15 @@ editSpacecraft.addEventListener('click', e => {
           
         });
     }
+    
+
+    //Update
 
     addSpacecraft.value = "Update";
 
 });
+
+const createArmamentElement = (title, qty) => {
+
+
+}
