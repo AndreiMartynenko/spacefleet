@@ -174,3 +174,22 @@ fetch(url,
     .catch(err => console.log(err))
 
 });
+
+
+
+
+//DELETE
+deleteSpacecraft.addEventListener('click', e => {
+
+    fetch(`/spaceship/${currentSpaceShipId}`, {
+        method: 'DELETE',
+        headers: {
+            'Accept': 'application/json',
+        }
+    })
+        .then(resp => resp.json())
+        .then(data => console.log(data))
+        .catch(err => console.log(err))
+
+
+    });

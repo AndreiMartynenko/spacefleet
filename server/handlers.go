@@ -120,6 +120,8 @@ func spaceshipHandler(w http.ResponseWriter, r *http.Request) {
 			resp = craft
 		}
 
+		//POST
+
 	} else if r.Method == "POST" {
 
 		name := r.FormValue("name")
@@ -180,24 +182,40 @@ func spaceshipHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			resp = QueryStatus{Success: true}
-		
+
+			//DELETE
+
 		} else if r.Method == "DELETE" {
 
 			path := strings.TrimSpace(r.URL.Path)
 			idStr := strings.TrimSpace(strings.TrimPrefix(path, "/spaceship/"))
+			id, err := strconv.Atoi(idStr)
 			if err != nil {
 				fmt.Println(err)
 				resp = QueryStatus{Success: false}
+				json.NewEncoder(w).Encode(resp)
 				return
-		}
+			}
+			err = deleteSpaceCraftById(id)
 
-		resp = QueryStatus{Success: true}
+			if err != nil {
+				fmt.Println(err)
+				resp = QueryStatus{Success: false}
+				json.NewEncoder(w).Encode(resp)
+				return
+			}
 
+			resp = QueryStatus{Success: true}
+
+			//PUT
+
+		} else if r.Method == "PUT" {
+			idStr := strings.TrimSpace(strings.TrimPrefix(path, "/spaceship/"))
+			idStr = strings.Split(idStr, "&")[0]
 
 		err = updateSpaceship(id, params)
 
 		if err != nil {
-			fmt.Println(err)
 			resp = QueryStatus{Success: false}
 			json.NewEncoder(w).Encode(resp)
 			return
